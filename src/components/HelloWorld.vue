@@ -273,7 +273,7 @@
         })
       },
       /****
-       * @method 钻到市级zijixie
+       * @method 钻到市级
        * */
       getCityInfo (params) {
         console.log(params)
