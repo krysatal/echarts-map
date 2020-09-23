@@ -11,6 +11,7 @@
   .container #main {
     width: 100%;
     min-height: 100%;
+    background-image: url("/static/img/bg.png");
   }
 </style>
 
@@ -44,7 +45,7 @@
         },
         commonOption: {
           color: '#fff464',
-          backgroundColor: '#eeeeee',
+          backgroundColor: '#000',
           tooltip: {
             show: true,
             formatter: '{b} <br/> {c}'
@@ -91,13 +92,18 @@
         self.myCharts = eCharts.init(document.getElementById('main'))
         eCharts.registerMap(mapType, mapJson)
         self.myCharts.setOption(mapOption)
-        self.myCharts.on('click', function (params) {
-          if (type === 'province') {
+        if (type === 'province') {
+          self.myCharts.on('click', function (params) {
             self.getProvinceInfo(params, type)
-          } else if (type === 'city') {
-            self.getCityInfo(params, type)
-          }
-        })
+          })
+        } else if (type === 'city') {
+          self.myCharts.on('contextmenu', (params) => {
+            document.getElementById('main').removeAttribute('_echarts_instance_')
+            document.getElementById('main').innerHTML = ''
+            let _option = Object.assign(self.commonOption, self.getChinaOption('china', china))
+            self.initEcharts('china', china, _option, 'province')
+          })
+        }
       },
       /****
        * @method 生成全国地图的配置项
