@@ -108,7 +108,7 @@
           geo: {
             show: true,
             map: mapType,
-            zoom: 1.2,
+            // zoom: 1.2,
             roam: false,
             itemStyle: {
               borderColor: '#006edd',
@@ -126,7 +126,7 @@
             {
               name: '测试数据',
               type: 'map',
-              zoom: 1.2,
+              // zoom: 1.2,
               map: mapType,
               aspectScale: 0.75,
               roam: false,
@@ -226,7 +226,7 @@
           geo: {
             show: true,
             map: mapType,
-            zoom: 1.2,
+            // zoom: 1.2,
             roam: false,
             itemStyle: {
               borderColor: '#006edd',
