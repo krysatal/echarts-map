@@ -122,6 +122,7 @@
         } else if (type === 'city') {
           myCharts.on('contextmenu', (params) => {
             let _option = Object.assign(self.commonOption, self.getChinaOption('china', china))
+            self.removeEventListener()
             self.initEcharts('china', china, _option, 'province')
           })
         }
