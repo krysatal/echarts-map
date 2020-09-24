@@ -26,10 +26,11 @@
   import china from './china'
   import nameMap from './nameMap'
 
+  let myCharts = null
   export default {
     data () {
       return {
-        myCharts: '',
+        // myCharts: '',
         BMap: null,
         geoCoordMap: {
           '浙江省': [120.153576, 30.287459],
@@ -71,13 +72,33 @@
         }
       }
     },
+    beforeDestroy () {
+      if (!myCharts) {
+        return false
+      }
+      window.removeEventListener("resize", this.resize)
+      window.removeEventListener('beforeunload', this.clearChart)
+      myCharts.dispose()
+      myCharts = null
+    },
     mounted () {
       const self = this
       this.computedWindowSize()
+      window.addEventListener('beforeunload', this.clearChart)
       let _option = Object.assign(self.commonOption, self.getChinaOption('china', china))
       this.initEcharts('china', china, _option, 'province')
     },
     methods: {
+      clearChart () {
+        this.$destroy()
+      },
+      removeEventListener () {
+        if (!myCharts) {
+          return false
+        }
+        myCharts.dispose()
+        myCharts = null
+      },
       /***
        * @method 初始化地图
        * @param mapType 地图名 china/zhejiang/hangzhou
@@ -87,18 +108,19 @@
        */
       initEcharts (mapType, mapJson, mapOption, type) {
         const self = this
-        console.log(mapType, mapJson)
-        self.myCharts = eCharts.init(document.getElementById('main'))
+        if (document.getElementById('main') && document.getElementById('main').hasAttribute('_echarts_instance_')) {
+          document.getElementById('main').removeAttribute('_echarts_instance_')
+          document.getElementById('main').innerHTML = ''
+        }
+        myCharts = eCharts.init(document.getElementById('main'))
         eCharts.registerMap(mapType, mapJson)
-        self.myCharts.setOption(mapOption)
+        myCharts.setOption(mapOption)
         if (type === 'province') {
-          self.myCharts.on('click', function (params) {
+          myCharts.on('click', function (params) {
             self.getProvinceInfo(params, type)
           })
         } else if (type === 'city') {
-          self.myCharts.on('contextmenu', (params) => {
-            document.getElementById('main').removeAttribute('_echarts_instance_')
-            document.getElementById('main').innerHTML = ''
+          myCharts.on('contextmenu', (params) => {
             let _option = Object.assign(self.commonOption, self.getChinaOption('china', china))
             self.initEcharts('china', china, _option, 'province')
           })
@@ -271,9 +293,8 @@
         // 引入vue-resource 才能使用this.$http
         this.$http.get('static/' + type + '/' + nameMap[type][params.name] + '.json').then(function (data) {
           eCharts.registerMap(nameMap[type][params.name], data.body)
-          document.getElementById('main').removeAttribute('_echarts_instance_')
-          document.getElementById('main').innerHTML = ''
           let _option = Object.assign(self.commonOption, self.getProvinceOption(nameMap[type][params.name], data.body))
+          self.removeEventListener()
           self.initEcharts(nameMap[type][params.name], data.body, _option, 'city')
         })
       },
