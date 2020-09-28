@@ -144,7 +144,9 @@
               shadowBlur: 10,
               shadowColor: '#e0ffff',
               opacity: 0.3
-            }
+            },
+            layoutCenter: ['72%', '60%'],
+            layoutSize: 1000
           },
           bmap: {
             zoom: 5,
@@ -158,6 +160,8 @@
               map: mapType,
               aspectScale: 0.75,
               roam: false,
+              layoutCenter: ['72%', '60%'],
+              layoutSize: 1000,
               // itemStyle: {
               //   borderColor: 'red'
               // },
@@ -262,12 +266,16 @@
               shadowBlur: 10,
               shadowColor: '#e0ffff',
               opacity: 0.3
-            }
+            },
+            layoutCenter: ['72%', '50%'],
+            layoutSize: 800
           },
           series: [{
             name: '测试数据',
             type: 'map',
             map: mapType,
+            layoutCenter: ['72%', '50%'],
+            layoutSize: 800,
             aspectScale: 0.75,
             roam: false,
             data: self.getSeriesInfo(mapJson)
