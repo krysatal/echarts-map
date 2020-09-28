@@ -6,6 +6,8 @@
     /*top: 0;*/
     width: 100%;
     height: 100%;
+    background: url("../../static/img/bg.png") no-repeat;
+    background-size: 100% 100%;
   }
 
   .container #main {
@@ -45,7 +47,7 @@
         },
         commonOption: {
           color: '#fff464',
-          backgroundColor: '#000',
+          backgroundColor: 'transparent',
           tooltip: {
             show: true,
             formatter: '{b} <br/> {c}'
@@ -148,10 +150,10 @@
             layoutCenter: ['72%', '60%'],
             layoutSize: 1000
           },
-          bmap: {
-            zoom: 5,
-            roam: false
-          },
+          // bmap: {
+          //   zoom: 5,
+          //   roam: false
+          // },
           series: [
             {
               name: '测试数据',
